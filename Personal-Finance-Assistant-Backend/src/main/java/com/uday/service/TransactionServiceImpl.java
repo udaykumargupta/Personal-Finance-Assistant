@@ -40,20 +40,49 @@ public class TransactionServiceImpl implements TransactionService {
         return TransactionResponse.fromTransaction(transactionRepository.save(transaction));
     }
 
-    @Override
-    public List<TransactionResponse> getTransactionsForUser(String username) {
-        User user = userRepository.findByEmail(username);
-        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
-        return transactionRepository.findByUser(user).stream()
-                .map(TransactionResponse::fromTransaction)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<TransactionResponse> getTransactionsForUser(String username) {
+//        User user = userRepository.findByEmail(username);
+//        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+//        return transactionRepository.findByUser(user).stream()
+//                .map(TransactionResponse::fromTransaction)
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    public List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate) {
+//        User user = userRepository.findByEmail(username);
+//        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+//        return transactionRepository.findByUserAndDateBetween(user, startDate, endDate).stream()
+//                .map(TransactionResponse::fromTransaction)
+//                .collect(Collectors.toList());
+//    }
 
+
+    //    more powerful method that can handle all filtering combinations instead of above two.
     @Override
-    public List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate) {
+    public List<TransactionResponse> getTransactions(String username, LocalDate startDate, LocalDate endDate, String category) {
         User user = userRepository.findByEmail(username);
-        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
-        return transactionRepository.findByUserAndDateBetween(user, startDate, endDate).stream()
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        List<Transaction> transactions;
+
+        boolean hasDateRange = startDate != null && endDate != null;
+        boolean hasCategory = category != null && !category.trim().isEmpty();
+
+        if (hasDateRange && hasCategory) {
+            transactions = transactionRepository.findByUserAndCategoryAndDateBetween(user, category, startDate, endDate);
+        } else if (hasDateRange) {
+            transactions = transactionRepository.findByUserAndDateBetween(user, startDate, endDate);
+        } else if (hasCategory) {
+            transactions = transactionRepository.findByUserAndCategory(user, category);
+        } else {
+            transactions = transactionRepository.findByUser(user);
+        }
+
+        return transactions.stream()
                 .map(TransactionResponse::fromTransaction)
                 .collect(Collectors.toList());
     }

@@ -35,18 +35,13 @@ public class TransactionController {
     public ResponseEntity<List<TransactionResponse>> getUserTransactions(
             Authentication authentication,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) String category) { // NEW category parameter
 
         String username = authentication.getName();
-        List<TransactionResponse> transactions;
 
-        // If both dates are provided, filter by date range.
-        // Otherwise, fetch all transactions.
-        if (startDate != null && endDate != null) {
-            transactions = transactionService.getTransactionsForUserByDateRange(username, startDate, endDate);
-        } else {
-            transactions = transactionService.getTransactionsForUser(username);
-        }
+
+        List<TransactionResponse> transactions = transactionService.getTransactions(username, startDate, endDate, category);
 
         return ResponseEntity.ok(transactions);
     }

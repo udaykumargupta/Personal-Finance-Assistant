@@ -10,11 +10,14 @@ import java.util.List;
 
 public interface TransactionService {
     TransactionResponse createTransaction(TransactionRequest request, String username);
-    List<TransactionResponse> getTransactionsForUser(String username);
 
-    // Method to get transactions within a date range
-    List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate);
+          // Method to get akk transactions
+    //    List<TransactionResponse> getTransactionsForUser(String username);
+          // Method to get transactions within a date range
+    //    List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate);
 
+    //    more powerful method that can handle all filtering combinations instead of above two.
+    List<TransactionResponse> getTransactions(String username, LocalDate startDate, LocalDate endDate, String category);
     //  Method to get the expense summary by category.
     List<ExpenseByCategoryResponse> getExpenseSummaryByCategory(String username, LocalDate startDate, LocalDate endDate);
 
