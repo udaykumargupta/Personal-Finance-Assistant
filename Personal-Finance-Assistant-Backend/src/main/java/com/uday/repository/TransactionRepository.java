@@ -29,7 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "GROUP BY t.category")
     List<ExpenseByCategoryResponse> getSummaryByCategory(@Param("user") User user, @Param("transactionType") TransactionType transactionType);
 
-//    JPQL query to group transactions by date and sum their amounts.
+    //    JPQL query to group transactions by date and sum their amounts.
     @Query("SELECT new com.uday.response.TransactionSummaryByDateResponse(t.date, SUM(t.amount)) " +
             "FROM Transaction t " +
             "WHERE t.user = :user AND t.type = :transactionType " +
