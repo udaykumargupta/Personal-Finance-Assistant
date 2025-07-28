@@ -1,6 +1,7 @@
 package com.uday.service;
 
 import com.uday.request.TransactionRequest;
+import com.uday.response.ExpenseByCategoryResponse;
 import com.uday.response.TransactionResponse;
 
 import java.time.LocalDate;
@@ -12,4 +13,8 @@ public interface TransactionService {
 
     // Method to get transactions within a date range
     List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate);
+
+    //  Method to get the expense summary.
+    List<ExpenseByCategoryResponse> getExpenseSummaryByCategory(String username);
+
 }
