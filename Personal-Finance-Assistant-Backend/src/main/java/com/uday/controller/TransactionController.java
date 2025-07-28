@@ -2,6 +2,7 @@ package com.uday.controller;
 
 import com.uday.request.TransactionRequest;
 import com.uday.response.TransactionResponse;
+import com.uday.service.PdfService;
 import com.uday.service.ReceiptService;
 import com.uday.service.TransactionService;
 import jakarta.validation.Valid;
@@ -27,6 +28,9 @@ public class TransactionController {
     @Autowired
     private ReceiptService receiptService;
 
+    @Autowired
+    private PdfService pdfService;
+
     @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(
             @Valid @RequestBody TransactionRequest request,
@@ -35,6 +39,22 @@ public class TransactionController {
         String username = authentication.getName();
         TransactionResponse createdTransaction = transactionService.createTransaction(request, username);
         return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
+    }
+
+    // Endpoint for uploading and processing a PDF statement
+    @PostMapping("/upload-pdf")
+    public ResponseEntity<List<TransactionResponse>> uploadPdfStatement(
+            @RequestParam("file") MultipartFile file,
+            Authentication authentication) {
+
+        String username = authentication.getName();
+        try {
+            List<TransactionResponse> responses = pdfService.processPdfStatement(file, username);
+            return new ResponseEntity<>(responses, HttpStatus.CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping
