@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +21,15 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private UserRepository userRepository; // Assuming you have a UserRepository
+    private UserRepository userRepository;
 
     @Override
     public TransactionResponse createTransaction(TransactionRequest request, String username) {
-        // Find the user by username. Handle case where user is not found.
         User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        // Create a new Transaction entity from the request
         Transaction transaction = new Transaction();
         transaction.setDescription(request.getDescription());
         transaction.setAmount(request.getAmount());
@@ -39,23 +38,32 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setCategory(request.getCategory());
         transaction.setUser(user);
 
-        // Save the transaction to the database
         Transaction savedTransaction = transactionRepository.save(transaction);
-
-        // Convert the saved entity to a response DTO and return it
         return TransactionResponse.fromTransaction(savedTransaction);
     }
 
     @Override
     public List<TransactionResponse> getTransactionsForUser(String username) {
-        // Find the user by username. Handle case where user is not found.
         User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
 
-        // Fetch all transactions for the user
         List<Transaction> transactions = transactionRepository.findByUser(user);
+        return transactions.stream()
+                .map(TransactionResponse::fromTransaction)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+
+        // Call the new repository method
+        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, startDate, endDate);
 
         // Convert the list of entities to a list of response DTOs
         return transactions.stream()
