@@ -8,6 +8,7 @@ import com.uday.repository.UserRepository;
 import com.uday.request.TransactionRequest;
 import com.uday.response.ExpenseByCategoryResponse;
 import com.uday.response.TransactionResponse;
+import com.uday.response.TransactionSummaryByDateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionResponse createTransaction(TransactionRequest request, String username) {
         User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-
+        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
         Transaction transaction = new Transaction();
         transaction.setDescription(request.getDescription());
         transaction.setAmount(request.getAmount());
@@ -39,20 +37,14 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDate(request.getDate());
         transaction.setCategory(request.getCategory());
         transaction.setUser(user);
-
-        Transaction savedTransaction = transactionRepository.save(transaction);
-        return TransactionResponse.fromTransaction(savedTransaction);
+        return TransactionResponse.fromTransaction(transactionRepository.save(transaction));
     }
 
     @Override
     public List<TransactionResponse> getTransactionsForUser(String username) {
         User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-
-        List<Transaction> transactions = transactionRepository.findByUser(user);
-        return transactions.stream()
+        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+        return transactionRepository.findByUser(user).stream()
                 .map(TransactionResponse::fromTransaction)
                 .collect(Collectors.toList());
     }
@@ -60,24 +52,53 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<TransactionResponse> getTransactionsForUserByDateRange(String username, LocalDate startDate, LocalDate endDate) {
         User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-
-        List<Transaction> transactions = transactionRepository.findByUserAndDateBetween(user, startDate, endDate);
-
-        return transactions.stream()
+        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+        return transactionRepository.findByUserAndDateBetween(user, startDate, endDate).stream()
                 .map(TransactionResponse::fromTransaction)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ExpenseByCategoryResponse> getExpenseSummaryByCategory(String username) {
+    public List<ExpenseByCategoryResponse> getExpenseSummaryByCategory(String username, LocalDate startDate, LocalDate endDate) {
         User user = userRepository.findByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        // Call the new repository method, specifying that we want to summarize expense.
-        return transactionRepository.getSummaryByCategory(user, TransactionType.EXPENSE);
+        // If dates are provided, use the new date-filtered query.
+        if (startDate != null && endDate != null) {
+            return transactionRepository.getSummaryByCategoryAndDateBetween(user, TransactionType.EXPENSE, startDate, endDate);
+        } else {
+            // Otherwise, use the original query.
+            return transactionRepository.getSummaryByCategory(user, TransactionType.EXPENSE);
+        }
+    }
+
+    @Override
+    public List<ExpenseByCategoryResponse> getIncomeSummaryByCategory(String username, LocalDate startDate, LocalDate endDate) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        // If dates are provided, use the new date-filtered query.
+        if (startDate != null && endDate != null) {
+            return transactionRepository.getSummaryByCategoryAndDateBetween(user, TransactionType.INCOME, startDate, endDate);
+        } else {
+            // Otherwise, use the original query.
+            return transactionRepository.getSummaryByCategory(user, TransactionType.INCOME);
+        }
+    }
+
+    @Override
+    public List<TransactionSummaryByDateResponse> getExpenseSummaryByDate(String username) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+        return transactionRepository.getSummaryByDate(user, TransactionType.EXPENSE);
+    }
+
+    @Override
+    public List<TransactionSummaryByDateResponse> getIncomeSummaryByDate(String username) {
+        User user = userRepository.findByEmail(username);
+        if (user == null) { throw new UsernameNotFoundException("User not found with username: " + username); }
+        return transactionRepository.getSummaryByDate(user, TransactionType.INCOME);
     }
 }
