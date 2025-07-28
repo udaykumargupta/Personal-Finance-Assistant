@@ -5,11 +5,15 @@ import com.uday.domain.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Table(name = "\"user\"")
 @Data
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -24,5 +28,8 @@ public class User {
     private TwoFactorAuth twoFactorAuth=new TwoFactorAuth();
 
     private USER_ROLE role=USER_ROLE.ROLE_CUSTOMER;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Transaction> transactions = new ArrayList<>();
 
 }
