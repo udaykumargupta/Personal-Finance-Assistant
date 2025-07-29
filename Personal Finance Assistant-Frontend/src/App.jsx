@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { getUser } from "./state/Auth/Action";
 import ForgotPasswordForm from "./page/Auth/ForgotPasswordForm";
 import ResetPasswordForm from "./page/Auth/ResetPasswordForm";
+import CreateTransaction from "./page/Transaction/CreateTransaction";
 
 function App() {
   const { auth } = useSelector(store => store);
@@ -17,7 +18,6 @@ function App() {
   useEffect(() => {
     dispatch(getUser(auth.jwt || localStorage.getItem("jwt")));
   }, [auth.jwt]);
-
   return (
     <>
       {auth.user ? (
@@ -28,6 +28,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/create-transaction" element={<CreateTransaction />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

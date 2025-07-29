@@ -5,6 +5,7 @@ import {
   ExitIcon,
   HomeIcon,
   PersonIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
 
 import { useDispatch } from "react-redux";
@@ -12,6 +13,11 @@ import { useNavigate } from "react-router-dom";
 
 const menu = [
   { name: "Home", path: "/", icon: <HomeIcon className="h-6 w-6" /> },
+  {
+    name: "Create Transaction", 
+    path: "/create-transaction",
+    icon: <PlusIcon className="h-6 w-6" />,
+  },
   {
     name: "Profile",
     path: "/profile",
