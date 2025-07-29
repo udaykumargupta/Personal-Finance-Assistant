@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { 
   getExpensesByCategory, 
@@ -15,6 +15,9 @@ import CombinedDateChart from '@/components/CombinedDateChart'; // Import the ne
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import TransactionTable from '@/components/TransactionTable';
+import { getTransactions } from '@/state/Transaction/Action';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -22,6 +25,10 @@ const Home = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+    // State for transaction filters
+  const [transactionStartDate, setTransactionStartDate] = useState('');
+  const [transactionEndDate, setTransactionEndDate] = useState('');
+  const [transactionCategory, setTransactionCategory] = useState('');
   // Fetch initial data for all charts when the component loads
   useEffect(() => {
     dispatch(getExpensesByCategory());
@@ -36,6 +43,14 @@ const Home = () => {
     dispatch(getExpensesByCategory(startDate, endDate));
     dispatch(getIncomeByCategory(startDate, endDate));
   };
+  // Handler for applying all filters for the transaction table
+  const handleTransactionFilter = () => {
+    dispatch(getTransactions({ 
+      startDate: transactionStartDate, 
+      endDate: transactionEndDate, 
+      category: transactionCategory 
+    }));
+  };
 
   // Check if the current chart type is one that uses the date filter
   const isCategoryChart = chartType === 'expense_vs_category' 
@@ -44,16 +59,58 @@ const Home = () => {
 
   return (
     <div className="lg:flex h-screen bg-gray-900 text-white">
-      {/* Left Half: Placeholder for future content */}
-      <div className="lg:w-1/3 lg:border-r lg:border-gray-700 p-5">
-        <Card className="bg-gray-800 border-gray-700 h-full">
+      {/* Left Half: Transactions and Filters */}
+      <div className="lg:w-1/3 lg:border-r lg:border-gray-700 p-5 flex flex-col gap-5">
+        <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
-            <CardTitle>Dashboard Overview</CardTitle>
+            <CardTitle>Filter Transactions</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-gray-400">This area can be used for summary widgets or other controls.</p>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div>
+                <label htmlFor="transactionStartDate" className="text-sm text-gray-400">Start Date</label>
+                <Input
+                  id="transactionStartDate"
+                  type="date"
+                  className="bg-gray-700 border-gray-600 text-white"
+                  value={transactionStartDate}
+                  onChange={(e) => setTransactionStartDate(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="transactionEndDate" className="text-sm text-gray-400">End Date</label>
+                <Input
+                  id="transactionEndDate"
+                  type="date"
+                  className="bg-gray-700 border-gray-600 text-white"
+                  value={transactionEndDate}
+                  onChange={(e) => setTransactionEndDate(e.target.value)}
+                />
+              </div>
+            </div>
+                        <div>
+              <label htmlFor="category" className="text-sm text-gray-400">Category</label>
+              <Select value={transactionCategory} onValueChange={setTransactionCategory}>
+                <SelectTrigger className="w-full bg-gray-700 border-gray-600 text-white">
+                  <SelectValue placeholder="All Categories" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 text-white border-gray-700">
+                  {/* Use a non-empty string for the 'All' option */}
+                  <SelectItem value="all">All</SelectItem>
+                  <SelectItem value="Food">Food</SelectItem>
+                  <SelectItem value="Shopping">Shopping</SelectItem>
+                  <SelectItem value="Transport">Transport</SelectItem>
+                  <SelectItem value="Utilities">Utilities</SelectItem>
+                  <SelectItem value="Entertainment">Entertainment</SelectItem>
+                  <SelectItem value="Salary">Salary</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <Button onClick={handleTransactionFilter} className="w-full">Filter Transactions</Button>
           </CardContent>
         </Card>
+        <TransactionTable />
       </div>
 
       {/* Right Half: Analytics & Graphs */}

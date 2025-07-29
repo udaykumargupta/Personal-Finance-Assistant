@@ -3,8 +3,8 @@ import * as actionTypes from './ActionTypes';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
-// Helper function to handle API requests
-const apiRequest = (dispatch, requestType, successType, failureType, endpoint, params = {}) => async () => {
+// Helper function that returns a thunk for handling API requests
+const apiRequest = (requestType, successType, failureType, endpoint, params = {}) => async (dispatch) => {
   dispatch({ type: requestType });
   try {
     const token = localStorage.getItem("jwt");
@@ -21,7 +21,7 @@ const apiRequest = (dispatch, requestType, successType, failureType, endpoint, p
 };
 
 // Action for Expenses by Category
-export const getExpensesByCategory = (startDate, endDate) => 
+export const getExpensesByCategory = (startDate, endDate) =>
   apiRequest(
     actionTypes.GET_EXPENSES_BY_CATEGORY_REQUEST,
     actionTypes.GET_EXPENSES_BY_CATEGORY_SUCCESS,
@@ -31,7 +31,7 @@ export const getExpensesByCategory = (startDate, endDate) =>
   );
 
 // Action for Income by Category
-export const getIncomeByCategory = (startDate, endDate) => 
+export const getIncomeByCategory = (startDate, endDate) =>
   apiRequest(
     actionTypes.GET_INCOME_BY_CATEGORY_REQUEST,
     actionTypes.GET_INCOME_BY_CATEGORY_SUCCESS,
@@ -41,7 +41,7 @@ export const getIncomeByCategory = (startDate, endDate) =>
   );
 
 // Action for Expenses by Date
-export const getExpensesByDate = () => 
+export const getExpensesByDate = () =>
   apiRequest(
     actionTypes.GET_EXPENSES_BY_DATE_REQUEST,
     actionTypes.GET_EXPENSES_BY_DATE_SUCCESS,
@@ -50,7 +50,7 @@ export const getExpensesByDate = () =>
   );
 
 // Action for Income by Date
-export const getIncomeByDate = () => 
+export const getIncomeByDate = () =>
   apiRequest(
     actionTypes.GET_INCOME_BY_DATE_REQUEST,
     actionTypes.GET_INCOME_BY_DATE_SUCCESS,
