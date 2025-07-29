@@ -25,12 +25,12 @@ A full-stack application designed to provide users with a powerful and intuitive
 - ✅ **Interactive Analytics Dashboard:** A comprehensive dashboard featuring **six distinct, interactive charts** to visualize financial data from every angle.
 - ✅ **Dynamic Chart Filtering:** Filter category-based analytics by a custom date range to drill down into specific periods.
 - ✅ **Available Charts:**
-    - Combined Daily Income vs. Expense (Bar Chart)
-    - Combined Income vs. Expense by Category (Donut Chart)
-    - Expenses by Category (Donut Chart)
-    - Income by Category (Donut Chart)
-    - Expenses Over Time (Line Chart)
-    - Income Over Time (Line Chart)
+    - Combined Daily Income vs. Expense
+    - Combined Income vs. Expense by Category 
+    - Expenses by Category 
+    - Income by Category 
+    - Expenses Over Time 
+    - Income Over Time 
 
 ---
 
