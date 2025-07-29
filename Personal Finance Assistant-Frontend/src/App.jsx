@@ -10,6 +10,7 @@ import { getUser } from "./state/Auth/Action";
 import ForgotPasswordForm from "./page/Auth/ForgotPasswordForm";
 import ResetPasswordForm from "./page/Auth/ResetPasswordForm";
 import CreateTransaction from "./page/Transaction/CreateTransaction";
+import UploadPdf from "./page/Transaction/UploadPdf";
 
 function App() {
   const { auth } = useSelector(store => store);
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/create-transaction" element={<CreateTransaction />} />
+            <Route path="/upload-statement" element={<UploadPdf />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
