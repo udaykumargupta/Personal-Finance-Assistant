@@ -6,7 +6,8 @@ import {
   HomeIcon,
   PersonIcon,
   PlusIcon,
-  UploadIcon, // Import the UploadIcon
+  UploadIcon,
+  ImageIcon, // Import the ImageIcon
 } from "@radix-ui/react-icons";
 
 import { useDispatch } from "react-redux";
@@ -20,9 +21,14 @@ const menu = [
     icon: <PlusIcon className="h-6 w-6" />,
   },
   {
-    name: "Upload Statement", 
+    name: "Upload Statement",
     path: "/upload-statement",
     icon: <UploadIcon className="h-6 w-6" />,
+  },
+  {
+    name: "Upload Receipt", // Add the new menu item
+    path: "/upload-receipt",
+    icon: <ImageIcon className="h-6 w-6" />,
   },
   {
     name: "Profile",
