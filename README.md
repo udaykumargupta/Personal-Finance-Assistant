@@ -4,6 +4,11 @@
 
 A full-stack application designed to provide users with a powerful and intuitive platform for tracking, managing, and analyzing their financial activities. This project showcases a robust, scalable backend built with Spring Boot following a clean architecture, and a modern, responsive frontend using React, Vite, and Shadcn/ui.
 
+Live Project link:-https://jazzy-trifle-11f750.netlify.app/
+
+Note: The site may take a few seconds to load initially. 
+      The signup page may take a few seconds to load after registration.
+
 ---
 
 ## ✨ Key Features
