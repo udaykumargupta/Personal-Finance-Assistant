@@ -14,7 +14,8 @@ const IncomeChart = () => {
         toolbar: {
           show: false,
         },
-        foreColor: '#A0AEC0' // Text color for the whole chart
+        foreColor: '#A0AEC0', // Text color for the whole chart
+        background: 'transparent'
       },
       xaxis: {
         categories: analytics.incomeByCategory.map(item => item.category),

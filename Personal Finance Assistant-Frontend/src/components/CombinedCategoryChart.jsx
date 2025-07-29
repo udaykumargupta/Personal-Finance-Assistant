@@ -34,7 +34,8 @@ const CombinedCategoryChart = () => {
         id: 'income-vs-expense-chart',
         type: 'bar',
         toolbar: { show: false },
-        foreColor: '#A0AEC0'
+        foreColor: '#A0AEC0',
+        background: 'transparent'
       },
       plotOptions: {
         bar: {

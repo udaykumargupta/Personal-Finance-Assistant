@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Table,
@@ -24,7 +24,12 @@ const TransactionTable = () => {
   const { transaction } = useSelector((store) => store);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Calculate total pages
+  // *** FIX: This useEffect hook will reset the page to 1 whenever the transaction list changes ***
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [transaction.transactions]);
+
+  // Calculate total pages based on the current list of transactions
   const totalPages = Math.ceil(transaction.transactions.length / ITEMS_PER_PAGE);
 
   // Get the transactions for the current page
@@ -63,7 +68,7 @@ const TransactionTable = () => {
             width: 8px;
           }
           .scroll-container::-webkit-scrollbar-track {
-            background: #2d3748; /* Corresponds to gray-800 */
+            background: #1a202c; /* Corresponds to gray-900 */
           }
           .scroll-container::-webkit-scrollbar-thumb {
             background: #4a5568; /* Corresponds to gray-700 */
@@ -74,7 +79,7 @@ const TransactionTable = () => {
           }
         `}
       </style>
-      <Card className="bg-gray-800 border-gray-700 text-white flex-grow flex flex-col overflow-hidden">
+      <Card className="bg-black border-gray-700 text-white flex-grow flex flex-col overflow-hidden">
         <CardHeader>
           <CardTitle>Recent Transactions</CardTitle>
         </CardHeader>
@@ -86,8 +91,8 @@ const TransactionTable = () => {
             {/* This content area will grow and scroll internally */}
             <CardContent className="flex-grow overflow-y-auto scroll-container p-0">
               <Table>
-                <TableHeader className="sticky top-0 bg-gray-800 z-10">
-                  <TableRow className="hover:bg-gray-700 border-b border-gray-700">
+                <TableHeader className="sticky top-0 bg-black z-10">
+                  <TableRow className="hover:bg-gray-800 border-b border-gray-700">
                     <TableHead className="w-[100px]">Date</TableHead>
                     <TableHead>Category</TableHead>
                     <TableHead>Type</TableHead>
@@ -96,7 +101,7 @@ const TransactionTable = () => {
                 </TableHeader>
                 <TableBody>
                   {paginatedTransactions.map((item) => (
-                    <TableRow key={item.id} className="hover:bg-gray-700 border-b border-gray-700">
+                    <TableRow key={item.id} className="hover:bg-gray-800 border-b border-gray-700">
                       <TableCell>{new Date(item.date).toLocaleDateString()}</TableCell>
                       <TableCell>{item.category}</TableCell>
                       <TableCell>

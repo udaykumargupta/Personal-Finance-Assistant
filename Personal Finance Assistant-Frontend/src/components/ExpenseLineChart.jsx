@@ -8,10 +8,12 @@ const ExpenseLineChart = () => {
 
   const chartData = {
     options: {
+      colors: ['#ef4444'],
       chart: {
         id: 'expense-by-date-chart',
         toolbar: { show: false },
-        foreColor: '#A0AEC0'
+        foreColor: '#A0AEC0',
+        background: 'transparent'
       },
       xaxis: {
         categories: analytics.expensesByDate.map(item => item.date),

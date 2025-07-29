@@ -36,7 +36,7 @@ const CreateTransaction = () => {
 
   return (
     <div className="p-5 lg:p-10 flex justify-center">
-      <Card className="w-full lg:w-[60%] bg-gray-800 border-gray-700 text-white">
+      <Card className="w-full lg:w-[60%] bg-black border-gray-700 text-white">
         <CardHeader>
           <CardTitle className="text-2xl">Create a New Transaction</CardTitle>
         </CardHeader>
@@ -63,22 +63,9 @@ const CreateTransaction = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="bg-gray-700 border-gray-600">
-                          <SelectValue placeholder="Select a category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="bg-gray-800 text-white border-gray-700">
-                        <SelectItem value="Food">Food</SelectItem>
-                        <SelectItem value="Shopping">Shopping</SelectItem>
-                        <SelectItem value="Transport">Transport</SelectItem>
-                        <SelectItem value="Utilities">Utilities</SelectItem>
-                        <SelectItem value="Entertainment">Entertainment</SelectItem>
-                        <SelectItem value="Salary">Salary</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <Input placeholder="e.g., Food, Shopping, Salary" {...field} className="bg-gray-700 border-gray-600" />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

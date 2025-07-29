@@ -11,7 +11,8 @@ const IncomeLineChart = () => {
       chart: {
         id: 'income-by-date-chart',
         toolbar: { show: false },
-        foreColor: '#A0AEC0'
+        foreColor: '#A0AEC0',
+        background: 'transparent'
       },
       xaxis: {
         categories: analytics.incomeByDate.map(item => item.date),

@@ -9,12 +9,14 @@ const ExpenseChart = () => {
   // Prepare data for the chart
   const chartData = {
     options: {
+      colors: ['#ef4444'],
       chart: {
         id: 'expense-by-category-chart',
         toolbar: {
           show: false,
         },
-        foreColor: '#A0AEC0' // Text color for the whole chart (axes, labels)
+        foreColor: '#A0AEC0', // Text color for the whole chart (axes, labels)
+        background: 'transparent'
       },
       xaxis: {
         categories: analytics.expensesByCategory.map(item => item.category),

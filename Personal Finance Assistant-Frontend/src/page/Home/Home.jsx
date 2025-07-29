@@ -41,6 +41,7 @@ const Home = () => {
     dispatch(getIncomeByCategory());
     dispatch(getExpensesByDate());
     dispatch(getIncomeByDate());
+    dispatch(getTransactions()); // Fetch initial transactions
   }, [dispatch]);
 
   // Handler for applying the date filter for category charts
@@ -50,14 +51,16 @@ const Home = () => {
     dispatch(getIncomeByCategory(startDate, endDate));
   };
   // Handler for applying all filters for the transaction table
-  const handleTransactionFilter = () => {
-    dispatch(
-      getTransactions({
-        startDate: transactionStartDate,
-        endDate: transactionEndDate,
-        category: transactionCategory,
-      })
-    );
+   const handleTransactionFilter = () => {
+    const filters = {
+      startDate: transactionStartDate,
+      endDate: transactionEndDate,
+    };
+    // Only add the category filter if it's not 'all'
+    if (transactionCategory && transactionCategory !== 'all') {
+      filters.category = transactionCategory;
+    }
+    dispatch(getTransactions(filters));
   };
 
   // Check if the current chart type is one that uses the date filter
@@ -67,10 +70,10 @@ const Home = () => {
     chartType === "income_vs_expense_category";
 
   return (
-    <div className="lg:flex h-screen bg-gray-900 text-white">
+    <div className="lg:flex h-screen bg-black text-white">
       {/* Left Half: Transactions and Filters */}
       <div className="lg:w-1/3 lg:border-r lg:border-gray-700 p-5 flex flex-col gap-5">
-        <Card className="bg-gray-800 border-gray-700">
+        <Card className="bg-black border-gray-700">
           <CardHeader>
             <CardTitle>Filter Transactions</CardTitle>
           </CardHeader>
@@ -98,21 +101,14 @@ const Home = () => {
               </div>
               <div className="col-span-2">
                 <label htmlFor="category" className="text-xs text-gray-400">Category</label>
-                <Select value={transactionCategory} onValueChange={setTransactionCategory}>
-                  <SelectTrigger className="w-full bg-gray-700 border-gray-600 text-white">
-                    <SelectValue placeholder="All Categories" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800 text-white border-gray-700">
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="Food">Food</SelectItem>
-                    <SelectItem value="Shopping">Shopping</SelectItem>
-                    <SelectItem value="Transport">Transport</SelectItem>
-                    <SelectItem value="Utilities">Utilities</SelectItem>
-                    <SelectItem value="Entertainment">Entertainment</SelectItem>
-                    <SelectItem value="Salary">Salary</SelectItem>
-                    <SelectItem value="Other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                {/* Replaced Select with Input for free-text search */}
+                <Input
+                  id="category"
+                  placeholder="Search by category..."
+                  className="bg-gray-700 border-gray-600 text-white"
+                  value={transactionCategory}
+                  onChange={(e) => setTransactionCategory(e.target.value)}
+                />
               </div>
               <div className="col-span-2">
                 <Button onClick={handleTransactionFilter} className="w-full">Filter</Button>
@@ -199,12 +195,13 @@ const Home = () => {
         </div>
 
         {/* Conditionally render the charts */}
-        {chartType === "income_vs_expense_daily" && <CombinedDateChart />}
+        
         {chartType === "income_vs_expense_category" && (
           <CombinedCategoryChart />
         )}
         {chartType === "expense_vs_category" && <ExpenseChart />}
         {chartType === "income_vs_category" && <IncomeChart />}
+        {chartType === "income_vs_expense_daily" && <CombinedDateChart />}
         {chartType === "expense_vs_date" && <ExpenseLineChart />}
         {chartType === "income_vs_date" && <IncomeLineChart />}
       </div>

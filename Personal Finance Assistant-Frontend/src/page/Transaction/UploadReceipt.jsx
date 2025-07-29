@@ -30,7 +30,7 @@ const UploadReceipt = () => {
 
   return (
     <div className="p-5 lg:p-10 flex justify-center">
-      <Card className="w-full lg:w-[60%] bg-gray-800 border-gray-700 text-white">
+      <Card className="w-full lg:w-[60%] bg-black border-gray-700 text-white">
         <CardHeader>
           <CardTitle className="text-2xl">Upload a Receipt</CardTitle>
         </CardHeader>
