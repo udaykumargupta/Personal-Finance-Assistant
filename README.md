@@ -9,6 +9,8 @@ Live Project link:-https://jazzy-trifle-11f750.netlify.app/
 Note: The site may take a few seconds to load initially. 
       The signup page may take a few seconds to load after registration.
 
+Video link:- https://youtu.be/erG9KWp0igY
+
 ---
 
 ## ✨ Key Features
