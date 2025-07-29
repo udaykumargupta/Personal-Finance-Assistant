@@ -1,8 +1,8 @@
-import React from "react";
+
 import "./Auth.css";
 import SignupForm from "./SignupForm";
 import { Button } from "@/components/ui/button";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import SigninForm from "./SigninForm";
 const Auth = () => {
@@ -15,7 +15,7 @@ const Auth = () => {
           className="bgBlure absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center h-[35rem] w-[30rem] rounded-md z-50 bg-black bg-opacity-50 shadow-2xl shadow-white px-10
         "
         >
-          <h1 className="text-6xl font-bold pb-9">PersonalFinance</h1>
+          <h1 className="text-6xl font-bold pb-9">Finance-Assistant</h1>
 
           {location.pathname == "/signup" ? (
             <section className="w-full">

@@ -1,7 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-import './App.css'
-import { useEffect } from 'react';
-import { getUser } from './state/Auth/Action';
+import { Route, Routes } from "react-router-dom";
+import Home from "./page/home/Home";
+import Navbar from "./page/Navbar/Navbar";
+import Profile from "./page/Profile/Profile";
+import NotFound from "./page/NotFound/NotFound";
+import Auth from "./page/Auth/Auth";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getUser } from "./state/Auth/Action";
+import ForgotPasswordForm from "./page/Auth/ForgotPasswordForm";
+import ResetPasswordForm from "./page/Auth/ResetPasswordForm";
 
 function App() {
   const { auth } = useSelector(store => store);

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import {useNavigate } from "react-router-dom"; // For routing
+import { useNavigate } from "react-router-dom"; // For routing
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const ResetPasswordForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -31,7 +32,7 @@ const ResetPasswordForm = () => {
       };
 
       await axios.post(
-        "http://localhost:5454/auth/password/reset",
+        `${API_BASE_URL}/auth/password/reset`,
         requestBody
       );
       

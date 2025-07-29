@@ -1,18 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios"; // Make sure to install axios: npm install axios
+import axios from "axios"; 
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 const ForgotPasswordForm = () => {
   // State for handling loading, success, and error messages
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
-
   const form = useForm({
-    // You should define defaultValues, not defaultValue
+    
     defaultValues: {
       email: "",
     },
@@ -30,9 +30,8 @@ const ForgotPasswordForm = () => {
         verificationType: "EMAIL", // This is for password reset via email
       };
 
-      // Replace with your actual backend API URL
       const response = await axios.post(
-        "http://localhost:5454/auth/password/send-otp",
+        `${API_BASE_URL}/auth/password/send-otp`,
         requestBody
       );
       
